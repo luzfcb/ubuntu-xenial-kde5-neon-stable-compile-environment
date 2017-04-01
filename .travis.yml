@@ -1,0 +1,25 @@
+sudo: required
+language: python
+services:
+  - docker
+env:
+  global:
+  - COMMIT=${TRAVIS_COMMIT::8}
+  - IMAGE_NAME=ubuntu-xenial-kde5-neon-stable-compile-environment
+  - REPO=luzfcb/ubuntu-xenial-kde5-neon-stable-compile-environment
+
+script:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then 
+    export TAG="latest"; else export TAG="$TRAVIS_BRANCH"; 
+    fi
+  - docker build --tag $IMAGE_NAME --tag $REPO:$TAG --tag $REPO -f Dockerfile .
+  
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+    docker login -u $DOCKER_USER -p $DOCKER_PASS
+    docker tag $REPO:$COMMIT $REPO:$TAG
+    docker tag $REPO:$COMMIT $REPO:$TRAVIS_BUILD_NUMBER
+    docker push $REPO
+    fi
+
