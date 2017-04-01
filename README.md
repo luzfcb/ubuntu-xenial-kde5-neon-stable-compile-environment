@@ -9,3 +9,8 @@ Strong based on from https://cgit.kde.org/sysadmin/ci-tools-experimental.git/tre
 
 
 
+```bash
+
+docker pull luzfcb/ubuntu-xenial-kde5-neon-stable-compile-environment:latest
+
+```
